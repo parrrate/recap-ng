@@ -1,0 +1,24 @@
+[workspace]
+members = ["recap-ng-derive"]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.95"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/parrrate/recap-ng"
+authors = ["Alisa Feistel <alisafeistel@gmail.com>"]
+
+[package]
+name = "recap-ng"
+version = "0.0.0-a.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+recap-ng-derive = { version = "=0.0.0-a.0", path = "./recap-ng-derive" }
+regex = "1.12.3"
+serde = { version = "1.0.228" }
+snafu = "0.9.0"
