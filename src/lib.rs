@@ -5,6 +5,9 @@ use std::fmt::Display;
 pub use recap_ng_derive::Recap;
 #[doc(hidden)]
 pub use regex;
+#[cfg(feature = "schemars")]
+#[doc(hidden)]
+pub use schemars;
 #[doc(hidden)]
 pub use serde;
 

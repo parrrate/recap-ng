@@ -193,6 +193,28 @@ fn recap_impl(input: DeriveInput) -> Result<TokenStream, TokenStream> {
     let regex = regex.as_str();
     let from_str = fragments.make_from_str();
     let display = fragments.make_display();
+    let schema_name = name.to_string();
+    let schemars = if cfg!(feature = "schemars") {
+        quote! {
+            impl #i ::recap_ng::schemars::JsonSchema for #name #t #w {
+                fn schema_name() -> ::std::borrow::Cow<'static, str> {
+                    #schema_name.into()
+                }
+
+                fn json_schema(generator: &mut ::recap_ng::schemars::SchemaGenerator)
+                    -> ::recap_ng::schemars::Schema
+                {
+                    let mut schema: ::recap_ng::schemars::Schema = <
+                        ::std::string::String as ::recap_ng::schemars::JsonSchema
+                    >::json_schema(generator);
+                    schema.ensure_object().insert("pattern".into(), #regex.into());
+                    schema
+                }
+            }
+        }
+    } else {
+        quote! {}
+    };
     let ts = quote! {
         const _: () = {
             static __REGEX: ::std::sync::LazyLock<::recap_ng::regex::Regex> =
@@ -230,6 +252,7 @@ fn recap_impl(input: DeriveInput) -> Result<TokenStream, TokenStream> {
                     ::std::string::ToString::to_string(self).serialize(serializer)
                 }
             }
+            #schemars
 
             #(#missing_captures)*
         };

@@ -20,5 +20,9 @@ authors.workspace = true
 [dependencies]
 recap-ng-derive = { version = "=0.0.0-a.0", path = "./recap-ng-derive" }
 regex = "1.12.3"
+schemars = { version = "1.2.2", optional = true }
 serde = { version = "1.0.228" }
 snafu = "0.9.0"
+
+[features]
+schemars = ["dep:schemars"]
